@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
- *         &lt;element name="Holiday" type="{http://com.tmi.hr/hr/schemas}HolidayType"/>
- *         &lt;element name="Employee" type="{http://com.tmi.hr/hr/schemas}EmployeeType"/>
+ *         &lt;element name="Holiday" type="{http://com.tmi.hr/hr/com.tmi.hr.schemas}HolidayType"/>
+ *         &lt;element name="Employee" type="{http://com.tmi.hr/hr/com.tmi.hr.schemas}EmployeeType"/>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
