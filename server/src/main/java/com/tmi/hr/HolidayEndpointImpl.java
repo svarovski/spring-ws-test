@@ -17,16 +17,12 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Endpoint
-public class HolidayEndpointImpl {
+public class HolidayEndpointImpl implements HolidayEndpoint {
     private static final Logger log = LoggerFactory.getLogger(HolidayEndpointImpl.class);
-
-    private static final String NAMESPACE_URI = "http://com.tmi.hr/hr/schemas";
 
     private static final Namespace namespace = Namespace.getNamespace("hr", NAMESPACE_URI);
 
@@ -34,8 +30,6 @@ public class HolidayEndpointImpl {
     private XPathExpression<Element> endDateExpression;
     private XPathExpression<Element> nameExpression;
     private XPathExpression<Element> surnameExpression;
-
-    private XPathExpression<Element> targetExpression;
 
     private HumanResourceService humanResourceService;
 
@@ -48,11 +42,10 @@ public class HolidayEndpointImpl {
         endDateExpression = xpathFactory.compile("//hr:EndDate", Filters.element(), null, namespace);
         nameExpression = xpathFactory.compile("//hr:FirstName", Filters.element(), null, namespace);
         surnameExpression = xpathFactory.compile("//hr:LastName", Filters.element(), null, namespace);
-
-        targetExpression = xpathFactory.compile("//hr:Target", Filters.element(), null, namespace);
     }
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "HolidayRequest")
+    @Override
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = HOLIDAY_REQUEST_LOCALPART)
     public void handleHolidayRequest(@RequestPayload Element holidayRequest) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = sdf.parse(startDateExpression.evaluate(holidayRequest).get(0).getValue());
@@ -62,7 +55,8 @@ public class HolidayEndpointImpl {
         humanResourceService.bookHoliday(startDate, endDate, name);
     }
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "CountRequest")
+    @Override
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = COUNT_REQUEST_LOCALPART)
     @ResponsePayload
     public CountResponse handleCountChars(@RequestPayload CountRequest countRequest) throws Exception {
         String target = countRequest.getTarget();
