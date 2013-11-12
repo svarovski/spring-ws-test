@@ -15,19 +15,18 @@
 
     <context:component-scan base-package="com.tmi.hr"/>
 
-    <sws:annotation-driven marshaller="marshaller" unmarshaller="marshaller"/>
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
 
-    <sws:dynamic-wsdl id="holiday"
-        portTypeName="HumanResource"
-        locationUri="/holidayService/"
-        targetNamespace="http://com.tmi.hr/hr/schemas">
-        <sws:xsd location="classpath:hr.xsd"/>
-    </sws:dynamic-wsdl>
+    <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
+        <constructor-arg ref="messageFactory"/>
+        <property name="messageSender">
+            <bean class="org.springframework.ws.transport.http.HttpComponentsMessageSender"/>
+        </property>
+        <property name="defaultUri" value="http://localhost:8080/holidayService"/>
+        <property name="marshaller" ref="marshaller"/>
+        <property name="unmarshaller" ref="marshaller"/>
+    </bean>
 
     <oxm:jaxb2-marshaller id="marshaller" contextPath="com.tmi.hr.schemas"/>
-
-    <sws:interceptors>
-        <bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
-    </sws:interceptors>
 
 </beans>

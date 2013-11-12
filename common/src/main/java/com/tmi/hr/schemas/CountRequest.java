@@ -40,6 +40,11 @@ import javax.xml.bind.annotation.XmlType;
 })
 @XmlRootElement(name = "CountRequest")
 public class CountRequest {
+    public CountRequest() {}
+
+    public CountRequest(String target) {
+        this.target = target;
+    }
 
     @XmlElement(name = "Target", required = true)
     protected String target;
