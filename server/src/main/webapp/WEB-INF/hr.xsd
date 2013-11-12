@@ -1,0 +1,43 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:hr="http://com.tmi.hr/hr/schemas"
+           elementFormDefault="qualified"
+           targetNamespace="http://com.tmi.hr/hr/schemas">
+    <xs:element name="HolidayRequest">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Holiday" type="hr:HolidayType"/>
+                <xs:element name="Employee" type="hr:EmployeeType"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="HolidayType">
+        <xs:sequence>
+            <xs:element name="StartDate" type="xs:date"/>
+            <xs:element name="EndDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EmployeeType">
+        <xs:sequence>
+            <xs:element name="Number" type="xs:integer"/>
+            <xs:element name="FirstName" type="xs:string"/>
+            <xs:element name="LastName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CountRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="String" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CountResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Words" type="xs:integer"/>
+                <xs:element name="Chars" type="xs:integer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
