@@ -1,5 +1,7 @@
 package com.tmi.hr;
 
+import com.tmi.hr.schemas.CountRequest;
+import com.tmi.hr.schemas.CountResponse;
 import com.tmi.hr.service.HumanResourceService;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -7,18 +9,22 @@ import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Endpoint
-public class HolidayEndpoint {
+public class HolidayEndpointImpl {
+    private static final Logger log = LoggerFactory.getLogger(HolidayEndpointImpl.class);
 
     private static final String NAMESPACE_URI = "http://com.tmi.hr/hr/schemas";
 
@@ -34,7 +40,7 @@ public class HolidayEndpoint {
     private HumanResourceService humanResourceService;
 
     @Autowired
-    public HolidayEndpoint(HumanResourceService humanResourceService) throws JDOMException {
+    public HolidayEndpointImpl(HumanResourceService humanResourceService) throws JDOMException {
         this.humanResourceService = humanResourceService;
 
         XPathFactory xpathFactory = XPathFactory.instance();
@@ -58,20 +64,11 @@ public class HolidayEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "CountRequest")
     @ResponsePayload
-    public Element handleCountChars(@RequestPayload Element countRequest) throws Exception {
-        String target = targetExpression.evaluate(countRequest).get(0).getValue();
+    public CountResponse handleCountChars(@RequestPayload CountRequest countRequest) throws Exception {
+        String target = countRequest.getTarget();
 
-        Element wordsElem = new Element("Words", namespace);
-        wordsElem.setText(String.valueOf(target.split("\\s+").length));
-        Element charsElem = new Element("Chars", namespace);
-        charsElem.setText(String.valueOf(target.length()));
-
-        Element element = new Element("CountResponse", namespace);
-        List<Element> children = element.getChildren();
-        children.add(wordsElem);
-        children.add(charsElem);
-
-        return element;
+        log.info("got target '{}'", target);
+        return new CountResponse(target.split("\\s+").length, target.length());
     }
 
 }

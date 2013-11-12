@@ -1,0 +1,1 @@
+xjc src/main/webapp/WEB-INF/hr.xsd -d src/main/java -p com.tmi.hr.schemas
