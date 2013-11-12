@@ -10,9 +10,4 @@ public class HumanResourceServiceImpl implements HumanResourceService {
     public void bookHoliday(Date startDate, Date endDate, String name) {
         System.out.println("Booking holiday for [" + startDate + "-" + endDate + "] for [" + name + "] ");
     }
-
-    @Override
-    public Integer countChars(String word) {
-        return word.length();
-    }
 }

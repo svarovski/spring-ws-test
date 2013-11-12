@@ -27,7 +27,7 @@
     <xs:element name="CountRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="String" type="xs:string"/>
+                <xs:element name="Target" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
